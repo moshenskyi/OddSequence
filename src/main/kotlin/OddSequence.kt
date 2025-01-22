@@ -26,7 +26,7 @@ internal class OddPositionIterator<T>(source: Sequence<T>) : AbstractIterator<T>
 fun <T> Sequence<T>.takeOddPositions() = OddSequence(this)
 
 fun main() {
-    (1..4).asSequence()
+    (1..100).asSequence()
         .takeOddPositions()
         .onEach { println("filtered element: $it") }
         .toList()
