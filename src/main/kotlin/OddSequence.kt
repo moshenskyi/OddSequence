@@ -3,26 +3,24 @@ class OddSequence<T> (private val source: Sequence<T>): Sequence<T> {
 }
 
 internal class OddPositionIterator<T>(source: Sequence<T>) : AbstractIterator<T>() {
-    private var index = 1
+    private var index = 0
     private val iterator = source.iterator()
 
     override fun computeNext() {
         while (iterator.hasNext()) {
+            index++
+
             val next = iterator.next()
 
-            if (tryAdd(next)) return
+            if (isEligible()) {
+                setNext(next)
+                return
+            }
         }
         done()
     }
 
-    private fun tryAdd(next: T): Boolean {
-        val isEligible = index % 2 != 0
-        if (isEligible) setNext(next)
-
-        index++
-
-        return isEligible
-    }
+    private fun isEligible() = index % 2 != 0
 }
 
 fun <T> Sequence<T>.takeOddPositions() = OddSequence(this)
